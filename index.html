@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .clock {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, #333 0, #333 50%, #000 0, #000 100%);
+            border-radius: 5px;
+            box-shadow: 0 0 1px 3px #000;
+
+        }
+
+        .plate {
+            width: 180px;
+            height: 180px;
+            background: #fff;
+            margin: 10px;
+            border-radius: 50%;
+            float: left;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div class="clock">
+    <div class="plate">
+
+    </div>
+
+</div>
+
+</body>
+<script>
+    let plate = document.querySelector(".plate");
+    for (let i = 0; i < 60; i++) {
+        let newdiv = document.createElement("div");
+        newdiv.style.cssText =
+            `width:${i % 5 === 0 ? 4 : 2}px;
+        height:${i % 5 === 0 ? 10 : 5}px;
+        background:#000;
+        position:absolute;
+        left:88px;
+        top:2px;
+        transform-origin:center 88px;
+        transform:rotate(${i * 6}deg);
+        `;
+        plate.appendChild(newdiv);
+    }
+    for(let i=0;i<12;i++){
+        let x=Math.cos(i*30*Math.PI/180)*70;
+        let y=Math.sin(i*30*Math.PI/180)*70;
+        let number=document.createElement("div");
+        number.style.cssText=
+            `width:20px;
+        height:20px;
+        // background:red;
+        position:absolute;
+        left:80px;
+        top:80px;
+        transform:translate(${x}px,${y}px);
+        text-align:center;
+        line-height:20px;
+        font-size:12px;`;
+        number.innerHTML=(i+3)>12?(i+3)%12:i+3;
+        plate.appendChild(number);
+    }
+
+    let hourPointer = document.createElement("div");
+    hourPointer.style.cssText = `
+    width:40px;
+    height:6px;
+    position:absolute;
+    left:90px;
+    top:87px;
+    background:#000;
+    transform-origin:left center;
+    `;
+    plate.appendChild(hourPointer);
+    let minutePointer = document.createElement("div");
+    minutePointer.style.cssText = `
+    width:60px;
+    height:4px;
+    position:absolute;
+    left:90px;
+    top:88px;
+    background:#000;
+    transform-origin:left center;
+    `;
+    plate.appendChild(minutePointer);
+    let secondPointer = document.createElement("div");
+    secondPointer.style.cssText = `
+    width:80px;
+    height:2px;
+    position:absolute;
+    left:90px;
+    top:89px;
+    background:red;
+    transform-origin:left center;
+    `;
+    plate.appendChild(secondPointer);
+
+    function setPointer() {
+        let date = new Date();
+        let hours = date.getHours();
+        let mintes = date.getMinutes();
+        let seconds = date.getSeconds();
+        hourPointer.style.transform = `rotate(${hours * 30 - 90 + mintes / 2}deg)`;
+        minutePointer.style.transform = `rotate(${mintes * 6 - 90}deg)`;
+        secondPointer.style.transform = `rotate(${seconds * 6 - 90}deg)`;
+        date = null;
+    }
+    setPointer();
+    setInterval(setPointer, 1000);
+
+</script>
+</html>
